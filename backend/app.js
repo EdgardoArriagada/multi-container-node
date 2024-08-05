@@ -83,8 +83,10 @@ app.delete('/goals/:id', async (req, res) => {
   }
 });
 
+const DB_CONTAINER_NAME = "mongodb";
+
 mongoose.connect(
-  'mongodb://localhost:27017/course-goals',
+  `mongodb://${DB_CONTAINER_NAME}:27017/course-goals`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

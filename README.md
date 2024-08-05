@@ -7,7 +7,7 @@ docker build -t goals-node ./backend
 docker build -t goals-node-front ./frontend
 
 # run db
-docker run --name mongodb --rm --network goals-node mongo
+docker run --name mongodb --rm --network goals-node -v goals-data:/data/db mongo
 
 # run backend
 cd backend && docker run --name goals-backend --rm --network goals-node -p80:80 goals-node

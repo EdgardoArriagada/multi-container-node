@@ -3,12 +3,15 @@
 docker network create goals-node
 
 # build images
-docker build ./backend
-docker build ./frontend
+docker build -t goals-node ./backend
+docker build -t goals-node-front ./frontend
+
+# run db
+docker run --name mongodb --rm --network goals-node mongo
 
 # run backend
-cd backend && docker run --name mongodb --rm -p27017:27017 --network goals-node mongo
+cd backend && docker run --name goals-backend --rm --network goals-node -p80:80 goals-node
 
 # run frontend
-cd frontend && docker run --name goals-frontend --rm -p3000:3000 --network goals-node -it goals-node-front
+cd frontend && docker run --name goals-frontend --rm -p3000:3000 -it goals-node-front
 ```

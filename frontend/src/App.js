@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import GoalInput from './components/goals/GoalInput';
-import CourseGoals from './components/goals/CourseGoals';
-import ErrorAlert from './components/UI/ErrorAlert';
+import GoalInput from "./components/goals/GoalInput";
+import CourseGoals from "./components/goals/CourseGoals";
+import ErrorAlert from "./components/UI/ErrorAlert";
+
+// it is localhost because it will reach be from browser
+const BACKEND_CONTAINER_NAME = "localhost";
 
 function App() {
   const [loadedGoals, setLoadedGoals] = useState([]);
@@ -14,19 +17,19 @@ function App() {
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://localhost/goals');
+        const response = await fetch(`http://${BACKEND_CONTAINER_NAME}/goals`);
 
         const resData = await response.json();
 
         if (!response.ok) {
-          throw new Error(resData.message || 'Fetching the goals failed.');
+          throw new Error(resData.message || "Fetching the goals failed.");
         }
 
         setLoadedGoals(resData.goals);
       } catch (err) {
         setError(
           err.message ||
-            'Fetching goals failed - the server responsed with an error.'
+            "Fetching goals failed - the server responsed with an error.",
         );
       }
       setIsLoading(false);
@@ -39,20 +42,20 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals', {
-        method: 'POST',
+      const response = await fetch(`http://${BACKEND_CONTAINER_NAME}/goals`, {
+        method: "POST",
         body: JSON.stringify({
           text: goalText,
         }),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const resData = await response.json();
 
       if (!response.ok) {
-        throw new Error(resData.message || 'Adding the goal failed.');
+        throw new Error(resData.message || "Adding the goal failed.");
       }
 
       setLoadedGoals((prevGoals) => {
@@ -68,7 +71,7 @@ function App() {
     } catch (err) {
       setError(
         err.message ||
-          'Adding a goal failed - the server responsed with an error.'
+          "Adding a goal failed - the server responsed with an error.",
       );
     }
     setIsLoading(false);
@@ -78,14 +81,17 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals/' + goalId, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `http://${BACKEND_CONTAINER_NAME}/goals/` + goalId,
+        {
+          method: "DELETE",
+        },
+      );
 
       const resData = await response.json();
 
       if (!response.ok) {
-        throw new Error(resData.message || 'Deleting the goal failed.');
+        throw new Error(resData.message || "Deleting the goal failed.");
       }
 
       setLoadedGoals((prevGoals) => {
@@ -95,7 +101,7 @@ function App() {
     } catch (err) {
       setError(
         err.message ||
-          'Deleting the goal failed - the server responsed with an error.'
+          "Deleting the goal failed - the server responsed with an error.",
       );
     }
     setIsLoading(false);
